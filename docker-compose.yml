@@ -1,0 +1,52 @@
+version: '2'
+services:
+  share:
+    image: inexus.ixxus.co.uk:28443/ixxus/com.ixxus.wtse-share:development
+    build:
+      dockerfile: Dockerfile
+      context: ./share-ext
+    environment:
+      ALFRESCO_HOST: repository
+    ports:
+      - "8180:8080"
+  repository:
+    image: inexus.ixxus.co.uk:28443/ixxus/com.ixxus.wtse-repo:development
+    build:
+      dockerfile: Dockerfile
+      context: ./repo-ext
+    ports:
+      - "8080:8080"
+    expose:
+      - "8443"
+    volumes:
+      - "./alf_data/:/opt/alfresco/alf_data"
+      - "./repo-ext/docker/alfresco-global.properties:/opt/alfresco/tomcat/shared/classes/alfresco-global.properties"
+    depends_on:
+      - database
+  database:
+    image: mysql:5.7
+    command: mysqld --character-set-server=utf8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: alfresco
+      MYSQL_USER: alfresco
+      MYSQL_PASSWORD: password
+    expose:
+      - "3306"
+    volumes:
+      - "./alf_data/database/:/var/lib/mysql"
+  solr:
+    image: inexus.ixxus.co.uk:28443/ixxus/alfresco-solr4:5.1.2
+    environment:
+      ALFRESCO_HOST: repository
+    expose:
+      - "8080"
+      - "8443"
+    volumes:
+      - "./alf_data/solr/:/opt/alfresco-solr4/data"
+  smtp:
+    image: munkyboy/fakesmtp
+    volumes:
+      - "./alf_data/smtp:/var/mail"
+    expose:
+      - "2525"
