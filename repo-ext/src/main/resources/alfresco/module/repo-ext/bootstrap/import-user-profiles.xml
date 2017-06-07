@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view:view xmlns:view="http://www.alfresco.org/view/repository/1.0"
+           xmlns:cm="http://www.alfresco.org/model/content/1.0">
+    <cm:person view:childName="cm:user1">
+        <view:acl>
+            <view:ace view:access="ALLOWED">
+                <view:authority>user1</view:authority>
+                <view:permission>All</view:permission>
+            </view:ace>
+        </view:acl>
+        <view:properties>
+            <cm:firstName>User</cm:firstName>
+            <cm:lastName>1</cm:lastName>
+            <cm:email></cm:email>
+            <cm:userName>user1</cm:userName>
+            <cm:homeFolder>/app:company_home/app:user_homes/cm:user1</cm:homeFolder>
+            <cm:organizationId>Ixxus</cm:organizationId>
+            <cm:sizeQuota>-1</cm:sizeQuota>
+            <cm:sizeCurrent>0</cm:sizeCurrent>
+        </view:properties>
+    </cm:person>
+    <cm:person view:childName="cm:user2">
+        <view:acl>
+            <view:ace view:access="ALLOWED">
+                <view:authority>user1</view:authority>
+                <view:permission>All</view:permission>
+            </view:ace>
+        </view:acl>
+        <view:properties>
+            <cm:firstName>User</cm:firstName>
+            <cm:lastName>2</cm:lastName>
+            <cm:email></cm:email>
+            <cm:userName>user2</cm:userName>
+            <cm:homeFolder>/app:company_home/app:user_homes/cm:user2</cm:homeFolder>
+            <cm:organizationId>Ixxus</cm:organizationId>
+            <cm:sizeQuota>-1</cm:sizeQuota>
+            <cm:sizeCurrent>0</cm:sizeCurrent>
+        </view:properties>
+    </cm:person>
+    <cm:person view:childName="cm:user3">
+        <view:acl>
+            <view:ace view:access="ALLOWED">
+                <view:authority>user1</view:authority>
+                <view:permission>All</view:permission>
+            </view:ace>
+        </view:acl>
+        <view:properties>
+            <cm:firstName>User</cm:firstName>
+            <cm:lastName>3</cm:lastName>
+            <cm:userName>user3</cm:userName>
+            <cm:homeFolder>/app:company_home/app:user_homes/cm:user3</cm:homeFolder>
+            <cm:organizationId>Ixxus</cm:organizationId>
+            <cm:sizeQuota>-1</cm:sizeQuota>
+            <cm:sizeCurrent>0</cm:sizeCurrent>
+        </view:properties>
+    </cm:person>
+</view:view>

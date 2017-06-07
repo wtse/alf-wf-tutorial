@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view:view xmlns:view="http://www.alfresco.org/view/repository/1.0"
+           xmlns:usr="http://www.alfresco.org/model/user/1.0"
+           xmlns:sys="http://www.alfresco.org/model/system/1.0">
+
+    <!-- Load the user account information -->
+    <usr:user view:childName="usr:user1">
+        <view:aspects>
+            <sys:referenceable></sys:referenceable>
+        </view:aspects>
+        <view:properties>
+            <usr:username>user1</usr:username>
+            <usr:password>0cb6948805f797bf2a82807973b89537</usr:password> <!-- test -->
+            <usr:accountExpires>false</usr:accountExpires>
+            <usr:credentialsExpire>false</usr:credentialsExpire>
+            <usr:accountLocked>false</usr:accountLocked>
+            <usr:enabled>true</usr:enabled>
+        </view:properties>
+    </usr:user>
+    <usr:user view:childName="usr:user2">
+        <view:aspects>
+            <sys:referenceable></sys:referenceable>
+        </view:aspects>
+        <view:properties>
+            <usr:username>user2</usr:username>
+            <usr:password>0cb6948805f797bf2a82807973b89537</usr:password> <!-- test -->
+            <usr:accountExpires>false</usr:accountExpires>
+            <usr:credentialsExpire>false</usr:credentialsExpire>
+            <usr:accountLocked>false</usr:accountLocked>
+            <usr:enabled>true</usr:enabled>
+        </view:properties>
+    </usr:user>
+    <usr:user view:childName="usr:user3">
+        <view:aspects>
+            <sys:referenceable></sys:referenceable>
+        </view:aspects>
+        <view:properties>
+            <usr:username>user3</usr:username>
+            <usr:password>0cb6948805f797bf2a82807973b89537</usr:password> <!-- test -->
+            <usr:accountExpires>false</usr:accountExpires>
+            <usr:credentialsExpire>false</usr:credentialsExpire>
+            <usr:accountLocked>false</usr:accountLocked>
+            <usr:enabled>true</usr:enabled>
+        </view:properties>
+    </usr:user>
+</view:view>

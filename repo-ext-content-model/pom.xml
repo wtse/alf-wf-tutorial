@@ -53,5 +53,24 @@
                 </dependency>
             </dependencies>
         </profile>
+
+        <profile>
+            <id>skipRome</id>
+            <dependencies>
+                <dependency>
+                    <groupId>${alfresco.groupId}</groupId>
+                    <artifactId>alfresco-repository</artifactId>
+                    <scope>provided</scope>
+                    <!-- the rome dependency cause an issue when running sonar:sonar goal -->
+                    <exclusions>
+                        <exclusion>
+                            <groupId>rome</groupId>
+                            <artifactId>rome</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+            </dependencies>
+        </profile>
+
     </profiles>
 </project>

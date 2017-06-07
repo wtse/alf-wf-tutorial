@@ -269,5 +269,13 @@
                 <module>share-ext</module>
             </modules>
         </profile>
+
     </profiles>
+
+
+    <modules>
+        <module>repo-ext-content-model</module>
+        <module>repo-ext</module>
+        <module>share-ext</module>
+    </modules>
 </project>

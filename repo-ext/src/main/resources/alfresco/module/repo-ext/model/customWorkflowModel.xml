@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Definition of new Model -->
+<model name="cuwf:workflowmodel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
+
+    <!-- Optional meta-data about the model -->
+    <description>Custom Workflow Model</description>
+    <author>Wing Tse</author>
+    <version>1.0</version>
+
+    <imports>
+        <!-- Import Alfresco Dictionary Definitions -->
+        <import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d"/>
+        <!-- Import Alfresco Content Domain Model Definitions -->
+        <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
+        <!-- Import Alfresco Workflow Model Definitions -->
+        <import uri="http://www.alfresco.org/model/bpm/1.0" prefix="bpm"/>
+        <import uri="http://www.alfresco.org/model/workflow/1.0" prefix="wf"/>
+    </imports>
+
+    <!-- Custom namespace for your domain -->
+    <namespaces>
+        <namespace uri="http://www.ixxus.com/model/workflow/1.0" prefix="cuwf"/>
+    </namespaces>
+
+    <constraints>
+        <constraint name="cuwf:minApproval" type="MINMAX">
+            <parameter name="minValue">
+                <value>1</value>
+            </parameter>
+            <parameter name="maxValue">
+                <value>3</value>
+            </parameter>
+        </constraint>
+    </constraints>
+
+    <types>
+        <!-- properties save against the workflow itself -->
+        <type name="cuwf:submitCustomReviewTask">
+            <parent>bpm:startTask</parent>
+            <mandatory-aspects>
+                <aspect>cuwf:approvalRequirement</aspect>
+            </mandatory-aspects>
+        </type>
+
+        <!-- properties save against the task -->
+        <type name="cuwf:activitiGroup1Review">
+            <parent>cuwf:activitiReviewTask</parent>
+            <properties>
+                <property name="cuwf:reason">
+                    <type>d:text</type>
+                    <mandatory>false</mandatory>
+                    <multiple>false</multiple>
+                </property>
+            </properties>
+        </type>
+
+        <!-- properties save against the task -->
+        <type name="cuwf:activitiGroup2Review">
+            <parent>cuwf:activitiReviewTask</parent>
+        </type>
+
+        <!-- properties save against the task -->
+        <type name="cuwf:activitiGroup3Review">
+            <parent>cuwf:activitiReviewTask</parent>
+        </type>
+
+        <!-- properties save against the task -->
+        <type name="cuwf:activitiReviewTask">
+            <parent>bpm:activitiOutcomeTask</parent>
+            <properties>
+                <property name="cuwf:approveRejectOutcome">
+                    <type>d:text</type>
+                    <default>Reject</default>
+                    <constraints>
+                        <constraint type="LIST">
+                            <parameter name="allowedValues">
+                                <list>
+                                    <value>Approve</value>
+                                    <value>Reject</value>
+                                </list>
+                            </parameter>
+                        </constraint>
+                    </constraints>
+                </property>
+            </properties>
+            <overrides>
+                <property name="bpm:packageItemActionGroup">
+                    <default>read_package_item_actions</default>
+                </property>
+                <property name="bpm:outcomePropertyName">
+                    <default>{http://www.someco.com/model/workflow/1.0}approveRejectOutcome</default>
+                </property>
+            </overrides>
+        </type>
+
+        <!-- properties save against the task -->
+        <type name="cuwf:activitiApprovedNotification">
+            <parent>bpm:workflowTask</parent>
+            <overrides>
+                <property name="bpm:packageItemActionGroup">
+                    <default>read_package_item_actions</default>
+                </property>
+            </overrides>
+        </type>
+
+        <!-- properties save against the task -->
+        <type name="cuwf:activitiRejectedNotification">
+            <parent>bpm:workflowTask</parent>
+            <overrides>
+                <property name="bpm:packageItemActionGroup">
+                    <default>read_package_item_actions</default>
+                </property>
+            </overrides>
+        </type>
+    </types>
+
+    <aspects>
+
+        <aspect name="cuwf:approvalRequirement">
+            <title>Approval Requirement</title>
+            <properties>
+                <property name="cuwf:minApproveToPass">
+                    <type>d:int</type>
+                    <mandatory>true</mandatory>
+                    <multiple>false</multiple>
+                    <constraints>
+                        <constraint ref="cuwf:minApproval" />
+                    </constraints>
+                </property>
+            </properties>
+        </aspect>
+    </aspects>
+</model>
+

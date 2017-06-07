@@ -1,1 +1,288 @@
-<alfresco-config />
+<alfresco-config>
+
+    <!--
+         ====================================================================
+         WORKFLOW FORMS
+         ====================================================================
+     -->
+
+    <!-- this form is used when we creating a activiti$customReview workflow instance -->
+    <config evaluator="string-compare" condition="activiti$customReview">
+        <forms>
+            <form>
+                <field-visibility>
+                    <show id="bpm:workflowDescription" />
+                    <show id="packageItems" />
+                    <show id="cuwf:minApproveToPass" />
+                    <show id="transitions" />
+                </field-visibility>
+                <appearance>
+                    <set id="" appearance="title" label-id="workflow.set.general" />
+                    <set id="items" appearance="title" label-id="workflow.set.items" />
+                    <set id="progress" appearance="title" label-id="workflow.set.task.progress" />
+                    <set id="other" appearance="title" label-id="workflow.set.other" />
+
+                    <field id="bpm:workflowDescription" label-id="workflow.field.message">
+                        <control template="/org/alfresco/components/form/controls/textarea.ftl">
+                            <control-param name="style">width: 95%</control-param>
+                        </control>
+                    </field>
+                    <field id="packageItems" set="items" />
+                    <!-- field's label comes from repo's content model labels -->
+                    <field id="cuwf:minApproveToPass" set="other" />
+                </appearance>
+            </form>
+        </forms>
+    </config>
+
+    <!-- this is used in the workflow detail page -->
+    <config evaluator="task-type" condition="cuwf:submitCustomReviewTask">
+        <forms>
+            <form id="workflow-details">
+                <field-visibility>
+                    <show id="bpm:workflowDescription" />
+                    <show id="packageItems" />
+                    <show id="cuwf:minApproveToPass" />
+                    <show id="transitions" />
+                    <show id="bpm:status" />
+                </field-visibility>
+                <appearance>
+                    <set id="" appearance="title" label-id="workflow.set.general" />
+                    <set id="items" appearance="title" label-id="workflow.set.items" />
+                    <set id="progress" appearance="title" label-id="workflow.set.task.progress" />
+                    <set id="other" appearance="title" label-id="workflow.set.other" />
+                    <set id="debug" appearance="title" label-id="task-type"/>
+
+                    <field id="bpm:workflowDescription" label-id="workflow.field.message">
+                        <control template="/org/alfresco/components/form/controls/textarea.ftl">
+                            <control-param name="style">width: 95%</control-param>
+                        </control>
+                    </field>
+                    <field id="packageItems" set="items" />
+                    <field id="cuwf:minApproveToPass" set="other" />
+                    <field id="bpm:status" set="progress" />
+                </appearance>
+            </form>
+        </forms>
+    </config>
+
+
+    <config evaluator="task-type" condition="cuwf:activitiGroup1Review" >
+        <forms>
+            <form id="workflow-details">
+                <field-visibility>
+                    <show id="packageItems" />
+                    <show id="bpm:comment" />
+                    <show id="cuwf:reason" />
+                    <show id="cuwf:approveRejectOutcome" />
+                    <show id="transitions" />
+                    <show id="bpm:status" />
+                </field-visibility>
+                <appearance>
+                    <set id="" appearance="title" label-id="workflow.set.general" />
+                    <set id="info" appearance="" template="/org/alfresco/components/form/2-column-set.ftl" />
+                    <set id="assignee" appearance="title" label-id="workflow.set.assignee" />
+                    <set id="items" appearance="title" label-id="workflow.set.items" />
+                    <set id="progress" appearance="title" label-id="workflow.set.task.progress" />
+                    <set id="response" appearance="title" label-id="workflow.set.response" />
+
+                    <field id="packageItems" set="items" />
+
+                    <field id="bpm:comment" label-id="workflow.field.comment" set="response">
+                        <control template="/org/alfresco/components/form/controls/textarea.ftl" />
+                    </field>
+                    <field id="cuwf:reason" set="response">
+                        <control template="/org/alfresco/components/form/controls/textarea.ftl" />
+                    </field>
+                    <field id="cuwf:approveRejectOutcome" set="response" />
+                    <field id="transitions" set="response" />
+                    <field id="bpm:status" set="progress" />
+                </appearance>
+            </form>
+            <form>
+                <field-visibility>
+                    <show id="packageItems" />
+                    <show id="bpm:comment" />
+                    <show id="cuwf:reason" />
+                    <show id="cuwf:approveRejectOutcome" />
+                    <show id="transitions" />
+                </field-visibility>
+                <appearance>
+                    <set id="" appearance="title" label-id="workflow.set.general" />
+                    <set id="info" appearance="" template="/org/alfresco/components/form/2-column-set.ftl" />
+                    <set id="assignee" appearance="title" label-id="workflow.set.assignee" />
+                    <set id="items" appearance="title" label-id="workflow.set.items" />
+                    <set id="progress" appearance="title" label-id="workflow.set.task.progress" />
+                    <set id="response" appearance="title" label-id="workflow.set.response" />
+                    <field id="packageItems" set="items" />
+
+                    <field id="bpm:comment" label-id="workflow.field.comment" set="response">
+                        <control template="/org/alfresco/components/form/controls/textarea.ftl" />
+                    </field>
+                    <field id="cuwf:reason" set="response">
+                        <control template="/org/alfresco/components/form/controls/textarea.ftl" />
+                    </field>
+                    <field id="cuwf:approveRejectOutcome" set="response" />
+                    <field id="transitions" set="response" />
+                </appearance>
+            </form>
+        </forms>
+    </config>
+
+    <config evaluator="task-type" condition="cuwf:activitiGroup2Review" >
+        <forms>
+            <form id="workflow-details">
+                <field-visibility>
+                    <show id="packageItems" />
+                    <show id="bpm:comment" />
+                    <show id="cuwf:approveRejectOutcome" />
+                    <show id="transitions" />
+                    <show id="bpm:status" />
+                </field-visibility>
+                <appearance>
+                    <set id="" appearance="title" label-id="workflow.set.general" />
+                    <set id="info" appearance="" template="/org/alfresco/components/form/2-column-set.ftl" />
+                    <set id="assignee" appearance="title" label-id="workflow.set.assignee" />
+                    <set id="items" appearance="title" label-id="workflow.set.items" />
+                    <set id="progress" appearance="title" label-id="workflow.set.task.progress" />
+                    <set id="response" appearance="title" label-id="workflow.set.response" />
+                    <field id="packageItems" set="items" />
+                    <field id="bpm:comment" label-id="workflow.field.comment" set="response">
+                        <control template="/org/alfresco/components/form/controls/textarea.ftl" />
+                    </field>
+                    <field id="cuwf:approveRejectOutcome" set="response" />
+                    <field id="transitions" set="response" />
+                    <field id="bpm:status" set="progress" />
+                </appearance>
+            </form>
+            <form>
+                <field-visibility>
+                    <show id="packageItems" />
+                    <show id="bpm:comment" />
+                    <show id="cuwf:approveRejectOutcome" />
+                    <show id="transitions" />
+                </field-visibility>
+                <appearance>
+                    <set id="" appearance="title" label-id="workflow.set.general" />
+                    <set id="info" appearance="" template="/org/alfresco/components/form/2-column-set.ftl" />
+                    <set id="assignee" appearance="title" label-id="workflow.set.assignee" />
+                    <set id="items" appearance="title" label-id="workflow.set.items" />
+                    <set id="progress" appearance="title" label-id="workflow.set.task.progress" />
+                    <set id="response" appearance="title" label-id="workflow.set.response" />
+                    <field id="packageItems" set="items" />
+                    <field id="bpm:comment" label-id="workflow.field.comment" set="response">
+                        <control template="/org/alfresco/components/form/controls/textarea.ftl" />
+                    </field>
+                    <field id="cuwf:approveRejectOutcome" set="response" />
+                    <field id="transitions" set="response" />
+                </appearance>
+            </form>
+        </forms>
+    </config>
+
+    <config evaluator="task-type" condition="cuwf:activitiGroup3Review">
+        <forms>
+            <form id="workflow-details">
+                <field-visibility>
+                    <show id="packageItems" />
+                    <show id="bpm:comment" />
+                    <show id="cuwf:approveRejectOutcome" />
+                    <show id="transitions" />
+                    <show id="bpm:status" />
+                </field-visibility>
+                <appearance>
+                    <set id="" appearance="title" label-id="workflow.set.general" />
+                    <set id="info" appearance="" template="/org/alfresco/components/form/2-column-set.ftl" />
+                    <set id="assignee" appearance="title" label-id="workflow.set.assignee" />
+                    <set id="items" appearance="title" label-id="workflow.set.items" />
+                    <set id="progress" appearance="title" label-id="workflow.set.task.progress" />
+                    <set id="response" appearance="title" label-id="workflow.set.response" />
+                    <field id="packageItems" set="items" />
+                    <field id="bpm:comment" label-id="workflow.field.comment" set="response">
+                        <control template="/org/alfresco/components/form/controls/textarea.ftl" />
+                    </field>
+                    <field id="cuwf:approveRejectOutcome" set="response" />
+                    <field id="transitions" set="response" />
+                    <field id="bpm:status" set="progress" />
+                </appearance>
+            </form>
+            <form>
+                <field-visibility>
+                    <show id="packageItems" />
+                    <show id="bpm:comment" />
+                    <show id="cuwf:approveRejectOutcome" />
+                    <show id="transitions" />
+                </field-visibility>
+                <appearance>
+                    <set id="" appearance="title" label-id="workflow.set.general" />
+                    <set id="info" appearance="" template="/org/alfresco/components/form/2-column-set.ftl" />
+                    <set id="assignee" appearance="title" label-id="workflow.set.assignee" />
+                    <set id="items" appearance="title" label-id="workflow.set.items" />
+                    <set id="progress" appearance="title" label-id="workflow.set.task.progress" />
+                    <set id="response" appearance="title" label-id="workflow.set.response" />
+                    <field id="packageItems" set="items" />
+                    <field id="bpm:comment" label-id="workflow.field.comment" set="response">
+                        <control template="/org/alfresco/components/form/controls/textarea.ftl" />
+                    </field>
+                    <field id="cuwf:approveRejectOutcome" set="response" />
+                    <field id="transitions" set="response" />
+                </appearance>
+            </form>
+        </forms>
+    </config>
+
+    <config evaluator="task-type" condition="cuwf:activitiApprovedNotification">
+        <forms>
+            <form>
+                <!-- order of proerties following the order in field-visibility -->
+                <field-visibility>
+                    <show id="packageItems" />
+                    <show id="bpm:comment" />
+                    <show id="transitions" />
+                </field-visibility>
+                <appearance>
+                    <set id="" appearance="title" label-id="workflow.set.general" />
+                    <set id="info" appearance="" template="/org/alfresco/components/form/2-column-set.ftl" />
+                    <set id="assignee" appearance="title" label-id="workflow.set.assignee" />
+                    <set id="items" appearance="title" label-id="workflow.set.items" />
+                    <set id="progress" appearance="title" label-id="workflow.set.task.progress" />
+                    <set id="response" appearance="title" label-id="workflow.set.response" />
+
+                    <field id="bpm:comment" label-id="workflow.field.comment" set="response">
+                        <control template="/org/alfresco/components/form/controls/textarea.ftl" />
+                    </field>
+                    <field id="packageItems" set="items" />
+                    <field id="transitions" set="response" />
+                </appearance>
+            </form>
+        </forms>
+    </config>
+
+    <config evaluator="task-type" condition="cuwf:activitiRejectedNotification">
+        <forms>
+            <form>
+                <field-visibility>
+                    <show id="packageItems" />
+                    <show id="bpm:comment" />
+                    <show id="transitions" />
+                </field-visibility>
+                <appearance>
+                    <set id="" appearance="title" label-id="workflow.set.general" />
+                    <set id="info" appearance="" template="/org/alfresco/components/form/2-column-set.ftl" />
+                    <set id="assignee" appearance="title" label-id="workflow.set.assignee" />
+                    <set id="items" appearance="title" label-id="workflow.set.items" />
+                    <set id="progress" appearance="title" label-id="workflow.set.task.progress" />
+                    <set id="response" appearance="title" label-id="workflow.set.response" />
+
+                    <field id="bpm:comment" label-id="workflow.field.comment" set="response">
+                        <control template="/org/alfresco/components/form/controls/textarea.ftl" />
+                    </field>
+
+                    <field id="packageItems" set="items" />
+                    <field id="transitions" set="response" />
+                </appearance>
+            </form>
+        </forms>
+    </config>
+
+</alfresco-config>

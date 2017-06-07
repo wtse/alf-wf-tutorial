@@ -31,6 +31,8 @@ services:
       MYSQL_DATABASE: alfresco
       MYSQL_USER: alfresco
       MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
     expose:
       - "3306"
     volumes:
@@ -49,4 +51,4 @@ services:
     volumes:
       - "./alf_data/smtp:/var/mail"
     expose:
-      - "2525"
+      - "25"

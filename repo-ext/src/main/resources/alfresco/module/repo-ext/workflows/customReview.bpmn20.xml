@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:activiti="http://activiti.org/bpmn"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+             typeLanguage="http://www.w3.org/2001/XMLSchema"
+             expressionLanguage="http://www.w3.org/1999/XPath"
+             targetNamespace="http://www.activiti.org/test">
+
+
+    <process id="customReview" name="Custom Review" isExecutable="true">
+        <!-- start event -->
+        <startEvent id="mainStartevent" name="Start" activiti:formKey="cuwf:submitCustomReviewTask"></startEvent>
+
+        <sequenceFlow id="start_to_setcounters" sourceRef="mainStartevent" targetRef="st_setcounters"></sequenceFlow>
+
+        <!-- script task to set counters -->
+        <serviceTask id="st_setcounters" name="Submit" activiti:class="org.alfresco.repo.workflow.activiti.script.AlfrescoScriptDelegate">
+            <extensionElements>
+                <activiti:field name="runAs">
+                    <activiti:string><![CDATA[admin]]></activiti:string>
+                </activiti:field>
+                <activiti:field name="script">
+                    <activiti:string><![CDATA[
+                      execution.setVariable('cuwf_approveCount', 0);
+                      execution.setVariable('cuwf_rejectCount', 0);
+                      execution.setVariable('cuwf_maxRejectToFail', 3 - cuwf_minApproveToPass);
+                  ]]></activiti:string>
+                </activiti:field>
+            </extensionElements>
+        </serviceTask>
+
+        <!-- call embedded subprocess for reviews -->
+        <sequenceFlow id="flow2" sourceRef="st_setcounters" targetRef="subProcessReviews"></sequenceFlow>
+
+        <!-- go to the exclusive gateway after the subprocess ended, to determine if the review is passed or failed -->
+        <exclusiveGateway id="approvedOrRejected" name="Exclusive Gateway"></exclusiveGateway>
+        <sequenceFlow id="flow3" sourceRef="subProcessReviews" targetRef="approvedOrRejected"></sequenceFlow>
+
+        <sequenceFlow id="flow4" sourceRef="approvedOrRejected" targetRef="ut_approved">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${cuwf_approveCount >= cuwf_minApproveToPass}]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="flow5" sourceRef="approvedOrRejected" targetRef="ut_rejected"/>
+
+
+        <userTask id="ut_approved" name="Approved Notification" activiti:assignee="${initiator.properties.userName}"
+                  activiti:formKey="cuwf:activitiApprovedNotification">
+        </userTask>
+        <userTask id="ut_rejected" name="Rejected Notification" activiti:assignee="${initiator.properties.userName}"
+                  activiti:formKey="cuwf:activitiRejectedNotification">
+        </userTask>
+
+        <sequenceFlow id="flow6" sourceRef="ut_approved" targetRef="mainEndevent"></sequenceFlow>
+        <sequenceFlow id="flow7" sourceRef="ut_rejected" targetRef="mainEndevent"></sequenceFlow>
+
+        <endEvent id="mainEndevent" name="End"></endEvent>
+
+
+        <!-- sub process to do the reviews -->
+        <!-- fork 3 parallel reviews, terminate when we get the min approved or max reject -->
+        <subProcess id="subProcessReviews">
+
+            <startEvent id="subProcessStart"/>
+            <sequenceFlow id="subFlow1" sourceRef="subProcessStart" targetRef="subProcessFork"/>
+
+            <parallelGateway id="subProcessFork"/>
+            <sequenceFlow id="subFlow2" sourceRef="subProcessFork" targetRef="ut_review1"/>
+            <sequenceFlow id="subFlow3" sourceRef="subProcessFork" targetRef="ut_review2"/>
+            <sequenceFlow id="subFlow4" sourceRef="subProcessFork" targetRef="ut_review3"/>
+
+            <userTask id="ut_review1" name="Review 1" activiti:candidateGroups="GROUP_group1" activiti:formKey="cuwf:activitiGroup1Review">
+                <extensionElements>
+                    <activiti:taskListener event="complete" class="org.alfresco.repo.workflow.activiti.tasklistener.ScriptTaskListener">
+                        <activiti:field name="script">
+                            <activiti:string>
+                                if(task.getVariableLocal('cuwf_approveRejectOutcome') == 'Approve') {
+                                var newApprovedCount = cuwf_approveCount + 1;
+                                execution.setVariable('cuwf_approveCount', newApprovedCount);
+                                } else {
+                                var newRejectedCount = cuwf_rejectCount + 1;
+                                execution.setVariable('cuwf_rejectCount', newRejectedCount);
+                                }
+                            </activiti:string>
+                        </activiti:field>
+                    </activiti:taskListener>
+                </extensionElements>
+            </userTask>
+
+            <userTask id="ut_review2" name="Review 2" activiti:candidateGroups="GROUP_group2" activiti:formKey="cuwf:activitiGroup2Review">
+                <extensionElements>
+                    <activiti:taskListener event="complete" class="org.alfresco.repo.workflow.activiti.tasklistener.ScriptTaskListener">
+                        <activiti:field name="script">
+                            <activiti:string>
+                                if(task.getVariableLocal('cuwf_approveRejectOutcome') == 'Approve') {
+                                var newApprovedCount = cuwf_approveCount + 1;
+                                execution.setVariable('cuwf_approveCount', newApprovedCount);
+                                } else {
+                                var newRejectedCount = cuwf_rejectCount + 1;
+                                execution.setVariable('cuwf_rejectCount', newRejectedCount);
+                                }
+                            </activiti:string>
+                        </activiti:field>
+                    </activiti:taskListener>
+                </extensionElements>
+            </userTask>
+
+            <userTask id="ut_review3" name="Review 3" activiti:candidateGroups="GROUP_group3" activiti:formKey="cuwf:activitiGroup3Review">
+                <extensionElements>
+                    <activiti:taskListener event="complete" class="org.alfresco.repo.workflow.activiti.tasklistener.ScriptTaskListener">
+                        <activiti:field name="script">
+                            <activiti:string>
+                                if(task.getVariableLocal('cuwf_approveRejectOutcome') == 'Approve') {
+                                var newApprovedCount = cuwf_approveCount + 1;
+                                execution.setVariable('cuwf_approveCount', newApprovedCount);
+                                } else {
+                                var newRejectedCount = cuwf_rejectCount + 1;
+                                execution.setVariable('cuwf_rejectCount', newRejectedCount);
+                                }
+                            </activiti:string>
+                        </activiti:field>
+                    </activiti:taskListener>
+                </extensionElements>
+            </userTask>
+
+
+            <exclusiveGateway id="subExclusivegateway" name="Check to terminate review subpress"></exclusiveGateway>
+            <sequenceFlow id="subFlow5" sourceRef="ut_review1" targetRef="subExclusivegateway"></sequenceFlow>
+            <sequenceFlow id="subFlow6" sourceRef="ut_review2" targetRef="subExclusivegateway"></sequenceFlow>
+            <sequenceFlow id="subFlow7" sourceRef="ut_review3" targetRef="subExclusivegateway"></sequenceFlow>
+
+            <sequenceFlow id="subFlow8" sourceRef="subExclusivegateway" targetRef="subProcessTerminateEndEvent">
+                <conditionExpression xsi:type="tFormalExpression"><![CDATA[${cuwf_approveCount >= cuwf_minApproveToPass}]]></conditionExpression>
+            </sequenceFlow>
+            <sequenceFlow id="subFlow9" sourceRef="subExclusivegateway" targetRef="subProcessTerminateEndEvent">
+                <conditionExpression xsi:type="tFormalExpression"><![CDATA[${cuwf_rejectCount > cuwf_maxRejectToFail}]]></conditionExpression>
+            </sequenceFlow>
+            <sequenceFlow id="subFlow10" sourceRef="subExclusivegateway" targetRef="subProcessJoin"/>
+
+            <parallelGateway id="subProcessJoin"/>
+            <sequenceFlow id="subFlow11" sourceRef="subProcessJoin" targetRef="subProcessEnd"/>
+            <endEvent id="subProcessEnd"/>
+
+            <endEvent id="subProcessTerminateEndEvent">
+                <terminateEventDefinition />
+            </endEvent>
+
+        </subProcess>
+
+    </process>
+</definitions>
